@@ -33,4 +33,21 @@ jobs:
           --name Azure-Start \
           --resource-group $(ResourceGroupName) \
           --template-file "$(System.DefaultWorkingDirectory)/main.bicep" \
-          --parameters main.parameters.json                      
+          --parameters serverName = $(serverName) \
+                       sqlDBName = $(sqlDBName) \
+                       location = $(location) \
+                       administratorLogin = $(administratorLogin) \
+                       administratorLoginPassword = $(administratorLoginPassword) \
+                       vnetName = $(vnetName) \
+                       vnetAddressPrefix = $(vnetAddressPrefix) \
+                       subnet1Prefix = $(subnet1Prefix) \
+                       subnet1Name = $(subnet1Name) \
+                       subnet2Prefix = $(subnet2Prefix) \
+                       subnet2Name = $(subnet2Name) 
+
+
+
+
+
+
+
