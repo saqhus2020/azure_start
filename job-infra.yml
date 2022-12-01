@@ -1,6 +1,7 @@
 parameters:
   EnvironmentName: 'Default'
 
+
 jobs:
 #####################################################################################
 #             Job: Create ResourceGroup                                             #
@@ -10,7 +11,7 @@ jobs:
 
   # For dedicated subscriptions the resource group can be created any way you like. This pipeline uses Azure CLI.
   - task: AzureCLI@1
-    displayName: 'Create Resource Group - Dedicated Subscription model'
+    displayName: 'Create Resource Group - Dedicated Subscription model'   
     enabled: true
     name: 'create_rg_dedicated'
     inputs:
