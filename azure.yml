@@ -17,7 +17,7 @@ stages:
   - stage: Dev_infra
     displayName: 'Dev Infra'
     variables:
-      - group: Development_new
+      - group: Development
     jobs:
     - template: job-infra.yml
       parameters: {EnvironmentName: 'Development_new'}
