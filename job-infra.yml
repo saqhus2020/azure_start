@@ -34,8 +34,7 @@ jobs:
           --resource-group $(ResourceGroupName) \
           --template-file "$(System.DefaultWorkingDirectory)/main.bicep" \
           --parameters main.parameters.json
-          --parameters location = "westeurope"
-
+          
 
 
 
