@@ -5,7 +5,7 @@ jobs:
 #####################################################################################
 #             Job: Create ResourceGroup                                             #
 #####################################################################################
-- job: 'CreatingResourceGroup'  
+- job: 'Create Azure Resources'  
   steps:
 
   # For dedicated subscriptions the resource group can be created any way you like. This pipeline uses Azure CLI.
