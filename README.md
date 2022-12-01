@@ -16,3 +16,5 @@ az deployment group create --resource-group rs_azure_start_dev01 --template-file
 az deployment group create --resource-group azure-start --template-file main.bicep --parameters main.parameters.json  
 
 az deployment group create --resource-group azure-start --template-file main.bicep --parameters serverName= "12d_azure_start"
+
+v
