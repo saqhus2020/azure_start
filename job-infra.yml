@@ -1,6 +1,6 @@
 parameters:
-  EnvironmentName: 'Default'
-
+  Environment: 'Default'
+  azureSubscription: 'Default'
 
 jobs:
 #####################################################################################
@@ -15,10 +15,10 @@ jobs:
     enabled: true
     name: 'create_rg_dedicated'
     inputs:
-      azureSubscription: $(AzureSPNOTA)
+      azureSubscription: ${{azureSubscription}}
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az group create --name $(ResourceGroupName) --location $(location) --tags "ProjectName=$(unique)"
+        az group create --name $(ResourceGroupName) --location $(location) 
 
   
 
