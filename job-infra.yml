@@ -21,20 +21,7 @@ jobs:
         az group create --name $(ResourceGroupName) --location $(location) --tags "ProjectName=$(unique)"
 
   
-     # Deploy the example infrastructure (Azure services) using the bicep template
-  - task: AzureCLI@1
-    displayName: 'Deploy SQL Server Using Bicep template'
-    enabled: true
-    name: 'Create_SQL'
-    inputs:
-      azureSubscription: $(AzureSPNOTA)
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az deployment group create \
-          --name Azure-Start \
-          --resource-group $(ResourceGroupName) \
-          --template-file "$(System.DefaultWorkingDirectory)/main.bicep" \
-          --parameters main.parameters.json
+
           
 
 
