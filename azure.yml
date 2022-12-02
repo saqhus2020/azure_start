@@ -23,4 +23,6 @@ stages:
       - group: Development_new
     jobs:
     - template: job-infra.yml
-      parameters: {EnvironmentName: 'Development'}
+      parameters: 
+        Environment: 'Development'
+        azureSubscription: $(AzureSPNOTA)
