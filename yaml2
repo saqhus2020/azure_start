@@ -1,0 +1,64 @@
+########################################################################
+#                                                                      #
+#  FU1 Infrastructure main pipeline, used to setup the stages and      #
+#  create the hierarchy that is used to have the same jobs everywhere  #
+#                                                                      #
+########################################################################
+
+name: $(Date:yyyyMMdd)$(Rev:.r)
+trigger: none
+pr: none
+
+
+
+# make all generic vars available from now on
+variables: 
+- group: 'FU1.Azure.Generic'
+
+
+########################################################################
+#                                                                      #
+#  Dev  infra setup start                                              #
+#  Has individual stages to accomodate for dev-test loop               #
+#                                                                      #
+########################################################################
+
+stages:
+- stage: Dev_infra
+  displayName: 'Dev Infra'
+  pool: '$(WindowsPool)'
+  variables:
+  - group: FU1.Azure.Dev
+  jobs:
+    - template: jobs-infra.yml
+      parameters: {EnvironmentName: 'Development', ServicePrincipleName: '$(OtaSpn)'}
+
+- stage: Test_infra
+  displayName: 'Test Infra'
+  pool: '$(WindowsPool)'
+  variables:
+  - group: FU1.Azure.Test
+  jobs:
+    - template: jobs-infra.yml
+      parameters: {EnvironmentName: 'Testing', ServicePrincipleName: '$(OtaSpn)'} 
+
+- stage: Acceptance_infra
+  displayName: 'Acceptance Infra'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  pool: '$(WindowsPool)'
+  variables:
+  - group: FU1.Azure.Acc
+  jobs:
+    - template: jobs-infra.yml
+      parameters: {EnvironmentName: 'Acceptance', ServicePrincipleName: '$(OtaSpn)'}  
+
+- stage: Production_Infra
+  displayName: 'Prd Infra'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  pool: '$(WindowsPool)'
+  variables:
+  - group: FU1.Azure.Prd
+  jobs:
+    - template: jobs-infra.yml
+      parameters: {EnvironmentName: 'Production', ServicePrincipleName: '$(PrdSpn)'}
+ 
