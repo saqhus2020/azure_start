@@ -1,0 +1,78 @@
+---
+parameters:
+  - name: environment
+    type: string
+    default: NO ENVIRONMENT SPECIFIED
+  - name: azureSubscription
+    type: string
+    default: NO AZURESUBSCRIPTION SPECIFIED
+  - name: runServiceManager
+    type: boolean
+    default: true
+
+jobs:
+  - job: ServiceManagerCreateChange
+    displayName: Service Manager Create Change
+    condition: eq(${{ parameters.runServiceManager }}, true)
+    steps:
+      - template: /jobs/deploy/servicemanager-create.yml@templates
+  
+  - deployment: DeployOrchestrationFrontEnd
+    displayName: Deploy Orchestration FrontEnd
+    dependsOn: ServiceManagerCreateChange
+    condition: in(dependencies.ServiceManagerCreateChange.result, 'Succeeded', 'SucceededWithIssues', 'Skipped')
+    environment:
+      name: ${{ parameters.environment }}
+    workspace:
+      clean: all
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - template: ${{ variables['System.DefaultWorkingDirectory'] }}\jobs\deploy\orchestration-frontend-deploy.yml@templates
+              parameters:
+                webAppName: app-fu1-orchestrationFrontEnd-$(EnvShortName)
+                azureSubscription: ${{ parameters.azureSubscription }}
+                webAppPackageToDeploy: '$(Pipeline.Workspace)/**/Orchestrator.FrontEnd.zip'
+                functionName: func-fu1-databaseFunctions-$(EnvShortName)
+                functionPackageToDeploy: '$(Pipeline.Workspace)/**/Orchestration.FrontEnd.DatabaseConnection.zip'
+
+  - job: ServiceManagerCloseChangeSuccess
+    displayName: Service Manager Close Change Success
+    dependsOn: DeployOrchestrationFrontEnd
+    condition: |
+      and
+      (
+        eq(${{ parameters.runServiceManager }}, true),
+        and
+        (
+          in(dependencies.ServiceManagerCreateChange.result, 'Succeeded', 'SucceededWithIssues'),
+          eq(dependencies.DeployOrchestrationFrontEnd.result, 'Succeeded')
+        )
+      )
+    steps:
+      - template: /jobs/deploy/servicemanager-close.yml@templates
+        parameters:
+          displayName: $(serviceManagerDisplayNameSuccess)
+          changeClosureCode: $(serviceManagerClosureCodeSuccess)
+          changeClosureComments: $(servicemanagerImplementationCommentsSuccess)
+
+  - job: ServiceManagerCloseChangeFailed
+    displayName: Service Manager Close Change Failed
+    dependsOn: DeployOrchestrationFrontEnd
+    condition: |
+      and
+      (
+        eq(${{ parameters.runServiceManager }}, true),
+        and
+        (
+          in(dependencies.ServiceManagerCreateChange.result, 'Succeeded', 'SucceededWithIssues'),
+          in(dependencies.DeployOrchestrationFrontEnd.result, 'SucceededWithIssues', 'Failed', 'Canceled', 'Skipped')
+        )
+      )
+    steps:
+      - template: /jobs/deploy/servicemanager-close.yml@templates
+        parameters:
+          displayName: $(serviceManagerDisplayNameFailed)
+          changeClosureCode: $(serviceManagerClosureCodeFailed)
+          changeClosureComments: $(servicemanagerImplementationCommentsFailed)
