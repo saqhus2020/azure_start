@@ -15,7 +15,7 @@ jobs:
     enabled: true
     name: 'create_rg_dedicated'
     inputs:
-      azureSubscription: ${{azureSubscription}}
+      azureSubscription: '${{azureSubscription}}'
       scriptLocation: 'inlineScript'
       inlineScript: |
         az group create --name $(ResourceGroupName) --location $(location) 
