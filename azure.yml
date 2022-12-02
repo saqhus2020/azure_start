@@ -15,7 +15,6 @@ variables:
   - name : location
     value: false
 
-pool: $(AgentPoolName)
 
 stages:
   - stage: Dev_infra
