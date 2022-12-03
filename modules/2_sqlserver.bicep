@@ -17,7 +17,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
 
 resource SqlFirewallRule 'Microsoft.Sql/servers/firewallRules@2022-05-01-preview'={
   parent: sqlServer
-  name: SqlFirewallRuleName 
+  name: 'SqlFirewallRuleName'
   properties: {
     startIpAddress: '77.163.184.203'
     endIpAddress: '77.163.184.203'
