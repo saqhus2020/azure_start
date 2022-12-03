@@ -34,6 +34,21 @@
     },
     "subnet2Name": {
       "value": "Subnet2"
+    },
+    "keyVaultName": {
+      "value": "kvazurestart1"
+    },
+    "secretsPermissions": {
+      "value": ["get", "list"]
+    },
+    "skuName": {
+      "value": "standard"
+    },
+    "secretName": {
+      "value": "tiger3"
+    },
+    "secretValue": {
+      "value": "tiger3"
     }
   }
 }
