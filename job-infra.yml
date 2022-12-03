@@ -37,8 +37,7 @@ jobs:
           --parameters serverName="sfdsfds" \                   
                        sqlDBName="sdfds"  \
                        location="dsfds" \
-                       administratorLogin="dsfs" \
-                       administratorLoginPassword = "dsfsds"
+                       administratorLogin="dsfs"                        
                           
 
           
