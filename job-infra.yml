@@ -30,7 +30,11 @@ jobs:
       azureSubscription: '${{parameters.azureSubscription}}'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az deployment group create --name Azure-Start --resource-group $(ResourceGroupName) --template-file "$(System.DefaultWorkingDirectory)/main.bicep" --parameters serverName = $(serverName)
+        az deployment group create \
+          --name Azure-Start \
+          --resource-group $(ResourceGroupName) \
+          --template-file "$(System.DefaultWorkingDirectory)/main.bicep" 
+          --parameters location = "westeurope"
           
   
 
