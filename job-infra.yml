@@ -33,7 +33,7 @@ jobs:
         az deployment group create \
           --name Azure-Start \
           --resource-group $(ResourceGroupName) \
-          --template-file "$(System.DefaultWorkingDirectory)/main.bicep" 
+          --template-file "$(System.DefaultWorkingDirectory)/main.bicep" \
           --parameters location = "westeurope" administratorLogin = "sfdsfds"
           
   
