@@ -24,3 +24,25 @@ az deployment group create --resource-group rs_azure_start_dev01 --template-file
           --resource-group $(ResourceGroupName) \
           --template-file "$(System.DefaultWorkingDirectory)/main.bicep" \
           --parameters main.parameters.json
+
+
+
+param vnetName string 
+param vnetAddressPrefix string 
+param subnet1Prefix string 
+param subnet1Name string 
+param subnet2Prefix string 
+param subnet2Name string 
+
+module VirtualNetwork 'modules/3_virtualnetwork.bicep' ={
+  name: 'VirtualNetwork'
+  params: {
+    location: location
+    subnet1Name: subnet1Name
+    subnet1Prefix: subnet1Prefix
+    subnet2Name: subnet2Name
+    subnet2Prefix: subnet2Prefix
+    vnetAddressPrefix: vnetAddressPrefix
+    vnetName: vnetName
+  }
+}

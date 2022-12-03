@@ -20,6 +20,21 @@ jobs:
       inlineScript: |
         az group create --name $(ResourceGroupName) --location $(location) 
 
+
+     # Deploy the example infrastructure (Azure services) using the bicep template
+  - task: AzureCLI@1
+    displayName: 'Deploy SQL Server Using Bicep template'
+    enabled: true
+    name: 'Create_SQL'
+    inputs:
+      azureSubscription: '${{parameters.azureSubscription}}'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az deployment group create \
+          --name Azure-Start \
+          --resource-group $(ResourceGroupName) \
+          --template-file "$(System.DefaultWorkingDirectory)/main.bicep"
+          
   
 
           
