@@ -34,7 +34,7 @@ jobs:
           --name Azure-Start \
           --resource-group $(ResourceGroupName) \
           --template-file "$(System.DefaultWorkingDirectory)/main.bicep" \
-          --parameters serverName = "sfdsfds"
+          --parameters serverName="sfdsfds"
           
   
 
