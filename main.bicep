@@ -19,7 +19,6 @@ param keysPermissions array
 param secretsPermissions array 
 param skuName string 
 param secretName string
-@secure()
 param secretValue string
 
 

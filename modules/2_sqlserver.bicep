@@ -2,7 +2,6 @@ param serverName string
 param sqlDBName string 
 param location string 
 param administratorLogin string
-@secure()
 param administratorLoginPassword string
 
 resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {

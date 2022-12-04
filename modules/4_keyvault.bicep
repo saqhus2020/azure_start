@@ -6,7 +6,6 @@ param keysPermissions array
 param secretsPermissions array 
 param skuName string 
 param secretName string
-@secure()
 param secretValue string
 
 resource kv 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
