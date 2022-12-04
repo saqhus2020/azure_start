@@ -1,7 +1,9 @@
+param appName string
 param serverName string
 param sqlDBName string 
 param location string
 param administratorLogin string 
+@secure()
 param administratorLoginPassword string
 
 param vnetName string 
@@ -18,6 +20,7 @@ param keysPermissions array
 param secretsPermissions array 
 param skuName string 
 param secretName string
+@secure()
 param secretValue string
 
 
@@ -47,7 +50,8 @@ module VirtualNetwork 'modules/3_virtualnetwork.bicep' ={
 
 module Keyvault 'modules/4_keyvault.bicep' ={
   name: 'Keyvault'
-  params:{
+
+    params:{
     keyVaultName: keyVaultName
     objectId: objectId
     secretName: secretName
