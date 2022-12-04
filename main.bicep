@@ -2,7 +2,6 @@ param serverName string
 param sqlDBName string 
 param location string
 param administratorLogin string 
-@secure()
 param administratorLoginPassword string
 
 param vnetName string 
