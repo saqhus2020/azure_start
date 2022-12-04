@@ -16,6 +16,7 @@ param keyVaultName string
 param tenantId string = subscription().tenantId 
 param objectId string = '2c52c6b6-1ce7-4ad6-942c-499a8fddba1f' 
 param keysPermissions array 
+
 param secretsPermissions array 
 param skuName string 
 param secretName string
