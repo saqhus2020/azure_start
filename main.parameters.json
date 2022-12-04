@@ -38,8 +38,17 @@
     "keyVaultName": {
       "value": "kvazurestart1"
     },
+    "keysPermissions": {
+      "value": [
+        "get",
+        "list"
+      ]
+    },
     "secretsPermissions": {
-      "value": ["get", "list"]
+      "value": [
+        "get",
+        "list"
+      ]
     },
     "skuName": {
       "value": "standard"
