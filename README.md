@@ -10,5 +10,10 @@ az deployment group create --resource-group azure-start --template-file main.bic
 az deployment group create --resource-group rs_azure_start_dev01 --template-file ./4_keyvault.bicep --parameters keyVaultName="kv-azure-start" objectId="put here id"
 
 
+az deployment group create --resource-group storage-resource-group --template-file maintest.bicep --parameters environmentType="nonprod"
+
+New-AzResourceGroupDeployment  -TemplateFile main.bicep   -environmentType nonprod
+
  
+
 
