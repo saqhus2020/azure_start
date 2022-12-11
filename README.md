@@ -14,7 +14,8 @@ az deployment group create --resource-group storage-resource-group --template-fi
 
 az deployment group create --resource-group rs_azure_start_dev01 --template-file main.bicep --parameters main.parameters.json location="westeurope"
 
-az deployment group create --resource-group storage-resource-group --template-file maintest.bicep --parameters main.parameters.json
+az deployment group create --resource-group storage-resource-group --template-file main.bicep --parameters main.parameters.json
+
 
 
 //output appServiceAppHostName string = appService.outputs.appServiceAppHostName

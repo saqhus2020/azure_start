@@ -13,6 +13,22 @@
         "name": "Standard",
         "tier": "Standard"
       }
+    },
+    "sqlServerAdministratorLogin": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/54526d0a-26e6-456d-90ee-3c15ff1f4cd1/resourceGroups/storage-resource-group/providers/Microsoft.KeyVault/vaults/kv-my1977"
+        },
+        "secretName": "sqlAdminLogin"
+      }
+    },
+    "sqlServerAdministratorPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/54526d0a-26e6-456d-90ee-3c15ff1f4cd1/resourceGroups/storage-resource-group/providers/Microsoft.KeyVault/vaults/kv-my1977"
+        },
+        "secretName": "sqlAdminLoginPassword"
+      }
     }
   }
 }

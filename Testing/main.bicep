@@ -1,7 +1,7 @@
 param location string = resourceGroup().location
 @minLength(5)
 @maxLength(30)
-param solutionName string = 'azure-start${uniqueString(resourceGroup().id)}'
+param solutionName string = 'azurestart' //${uniqueString(resourceGroup().id)}'
 
 @allowed([
   'dev'
@@ -21,11 +21,13 @@ param sqlServerAdministratorLogin string
 param sqlServerAdministratorPassword string
 param sqlDatabaseSku object
 
+param auditStorageAccountSkuName string = 'Standard_LRS'
+
 var appServicePlanName = '${environmentName}-${solutionName}-plan'
 var appServiceAppName = '${environmentName}-${solutionName}-app'
 var sqlServerName = '${environmentName}-${solutionName}-sql'
 var sqlDatabaseName = 'Employees'
-
+var auditStorageAccountName = '${environmentName}${solutionName}auditst'
 
 module appService 'modules/appService.bicep' = {
   name: 'appService'
@@ -38,21 +40,17 @@ module appService 'modules/appService.bicep' = {
   }
 }
 
-resource sqlServer 'Microsoft.Sql/servers@2020-11-01-preview' = {
-  name: sqlServerName
-  location: location
-  properties: {
-    administratorLogin: sqlServerAdministratorLogin
-    administratorLoginPassword: sqlServerAdministratorPassword
-  }
-}
-
-resource sqlDatabase 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
-  parent: sqlServer
-  name: sqlDatabaseName
-  location: location
-  sku: {
-    name: sqlDatabaseSku.name
-    tier: sqlDatabaseSku.tier
+module sqlServer 'modules/sqlServer.bicep' = {
+  name: 'sqlServer'
+  params: {
+    location: location
+    sqlDatabaseName: sqlDatabaseName
+    sqlDatabaseSku: sqlDatabaseSku
+    sqlServerAdministratorLogin: sqlServerAdministratorLogin
+    sqlServerAdministratorPassword: sqlServerAdministratorPassword
+    sqlServerName: sqlServerName
+    auditStorageAccountName: auditStorageAccountName
+    auditStorageAccountSkuName: auditStorageAccountSkuName
+    
   }
 }
