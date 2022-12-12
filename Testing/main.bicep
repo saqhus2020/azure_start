@@ -54,3 +54,9 @@ module sqlServer 'modules/sqlServer.bicep' = {
     
   }
 }
+
+
+output solutionName string = solutionName
+output auditstorageEndpointBlob string = sqlServer.outputs.auditstorageEndpointBlob
+//output storageAccesskey string = sqlServer.outputs.storageAccesskey
+
