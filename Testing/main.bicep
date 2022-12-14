@@ -22,12 +22,26 @@ param sqlServerAdministratorPassword string
 param sqlDatabaseSku object
 
 param auditStorageAccountSkuName string = 'Standard_LRS'
+param virtualNetworkAddressPrefix string 
+param subnets array 
+
 
 var appServicePlanName = '${environmentName}-${solutionName}-plan'
 var appServiceAppName = '${environmentName}-${solutionName}-app'
 var sqlServerName = '${environmentName}-${solutionName}-sql'
 var sqlDatabaseName = 'Employees'
 var auditStorageAccountName = '${environmentName}${solutionName}auditst'
+var virtualnetworkName = '${environmentName}-${solutionName}-vn'
+
+module virtualNetwork 'modules/network.bicep'={
+  name: 'virtualNetwork'
+  params:{
+    location: location    
+    virtualNetworkName:virtualnetworkName
+    subnets: subnets
+    virtualNetworkAddressPrefix: virtualNetworkAddressPrefix
+  }
+}
 
 module appService 'modules/appService.bicep' = {
   name: 'appService'
