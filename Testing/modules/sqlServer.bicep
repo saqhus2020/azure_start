@@ -31,6 +31,12 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
 resource auditStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01'={
   name: auditStorageAccountName
   location: location
+  tags: {
+    CostCenter: 'Marketing'
+    DataClassification: 'Public'
+    Owner: 'WebsiteTeam'
+    Environment: 'Production'
+  }
   sku:{
     name: auditStorageAccountSkuName
   }
