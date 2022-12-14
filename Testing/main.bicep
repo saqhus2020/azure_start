@@ -31,7 +31,7 @@ var appServiceAppName = '${environmentName}-${solutionName}-app'
 var sqlServerName = '${environmentName}-${solutionName}-sql'
 var sqlDatabaseName = 'Employees'
 var auditStorageAccountName = '${environmentName}${solutionName}auditst'
-var virtualnetworkName = '${environmentName}-${solutionName}-vn'
+var virtualnetworkName = '${environmentName}-${solutionName}-vnet'
 
 module virtualNetwork 'modules/network.bicep'={
   name: 'virtualNetwork'
