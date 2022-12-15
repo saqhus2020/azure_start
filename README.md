@@ -20,13 +20,3 @@ az deployment group create --resource-group storage-resource-group --template-fi
 
 //output appServiceAppHostName string = appService.outputs.appServiceAppHostName
 
-resource sqlServerAudit 'Microsoft.Sql/servers/auditingSettings@2022-05-01-preview'={
-  parent: sqlServer
-  name: 'default'
-  properties:{
-    state: 'Enabled'
-    storageEndpoint: auditStorageAccount.properties.primaryEndpoints.blob
-    storageAccountAccessKey: listKeys(auditStorageAccount.id, auditStorageAccount.apiVersion).keys[0]
-  }
-
-}
