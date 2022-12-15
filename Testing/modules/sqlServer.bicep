@@ -16,6 +16,9 @@ resource sqlServer 'Microsoft.Sql/servers@2020-11-01-preview' = {
     administratorLogin: sqlServerAdministratorLogin
     administratorLoginPassword: sqlServerAdministratorPassword
   }
+  tags:{
+    CostCenter: 'AzureStart'
+  }
 }
 
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
@@ -28,14 +31,20 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
   }
 }
 
+resource SqlFirewallRule 'Microsoft.Sql/servers/firewallRules@2022-05-01-preview'={
+  parent: sqlServer
+  name: 'SqlFirewallRuleName'
+  properties: {
+    startIpAddress: '77.163.184.203'
+    endIpAddress: '77.163.184.203'
+  }
+}
+
 resource auditStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01'={
   name: auditStorageAccountName
   location: location
   tags: {
-    CostCenter: 'Marketing'
-    DataClassification: 'Public'
-    Owner: 'WebsiteTeam'
-    Environment: 'Production'
+    CostCenter: 'AzureStart' 
   }
   sku:{
     name: auditStorageAccountSkuName
