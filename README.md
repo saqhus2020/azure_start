@@ -24,3 +24,4 @@ az deployment group create --resource-group storage-resource-group --mode Comple
 
 //output appServiceAppHostName string = appService.outputs.appServiceAppHostName
 
+1
