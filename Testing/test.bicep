@@ -1,49 +1,78 @@
-@description('The name of the environment. This must be dev, test, or prod.')
-@allowed([
-  'dev'
-  'test'
-  'prod'
-])
-param environmentName string = 'dev'
-
-@description('The unique name of the solution. This is used to ensure that resource names are unique.')
-@minLength(5)
-@maxLength(30)
-param solutionName string = 'toyhr${uniqueString(resourceGroup().id)}'
-
-@description('The number of App Service plan instances.')
-@minValue(1)
-@maxValue(10)
-param appServicePlanInstanceCount int = 10
-
-@description('The name and tier of the App Service plan SKU.')
-param appServicePlanSku object = {
-  name: 'F1'
-  tier: 'Free'
-}
-
-@description('The Azure region into which the resources should be deployed.')
-param location string = 'westus3'
-
-var appServicePlanName = '${environmentName}-${solutionName}-plan'
-var appServiceAppName = '${environmentName}-${solutionName}-app'
-
-resource appServicePlan 'Microsoft.Web/serverFarms@2020-06-01' = {
-  name: appServicePlanName
-  location: location
-  properties: {}
-  sku: {
-    name: appServicePlanSku.name
-    tier: appServicePlanSku.tier
-    capacity: appServicePlanInstanceCount
+resource symbolicname 'Microsoft.Synapse/workspaces@2021-06-01' = {
+  name: 'string'
+  location: 'string'
+  tags: {
+    tagName1: 'tagValue1'
+    tagName2: 'tagValue2'
   }
-}
-
-resource appServiceApp 'Microsoft.Web/sites@2020-06-01' = {
-  name: appServiceAppName
-  location: location
+  identity: {
+    type: 'string'
+    userAssignedIdentities: {}
+  }
   properties: {
-    serverFarmId: appServicePlan.id
-    httpsOnly: true
+    azureADOnlyAuthentication: bool
+    connectivityEndpoints: {}
+    cspWorkspaceAdminProperties: {
+      initialWorkspaceAdminObjectId: 'string'
+    }
+    defaultDataLakeStorage: {
+      accountUrl: 'string'
+      createManagedPrivateEndpoint: bool
+      filesystem: 'string'
+      resourceId: 'string'
+    }
+    encryption: {
+      cmk: {
+        kekIdentity: {
+          userAssignedIdentity: 'string'
+          useSystemAssignedIdentity: any()
+        }
+        key: {
+          keyVaultUrl: 'string'
+          name: 'string'
+        }
+      }
+    }
+    managedResourceGroupName: 'string'
+    managedVirtualNetwork: 'string'
+    managedVirtualNetworkSettings: {
+      allowedAadTenantIdsForLinking: [
+        'string'
+      ]
+      linkedAccessCheckOnTargetResource: bool
+      preventDataExfiltration: bool
+    }
+    privateEndpointConnections: [
+      {
+        properties: {
+          privateEndpoint: {}
+          privateLinkServiceConnectionState: {
+            description: 'string'
+            status: 'string'
+          }
+        }
+      }
+    ]
+    publicNetworkAccess: 'string'
+    purviewConfiguration: {
+      purviewResourceId: 'string'
+    }
+    sqlAdministratorLogin: 'string'
+    sqlAdministratorLoginPassword: 'string'
+    trustedServiceBypassEnabled: bool
+    virtualNetworkProfile: {
+      computeSubnetId: 'string'
+    }
+    workspaceRepositoryConfiguration: {
+      accountName: 'string'
+      collaborationBranch: 'string'
+      hostName: 'string'
+      lastCommitId: 'string'
+      projectName: 'string'
+      repositoryName: 'string'
+      rootFolder: 'string'
+      tenantId: 'string'
+      type: 'string'
+    }
   }
 }

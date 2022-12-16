@@ -16,6 +16,10 @@ az deployment group create --resource-group rs_azure_start_dev01 --template-file
 
 az deployment group create --resource-group storage-resource-group --template-file main.bicep --parameters main.parameters.json
 
+az configure --defaults group=[storage-resource-group]
+
+az deployment group what-if --resource-group storage-resource-group --template-file test.bicep 
+az deployment group create --resource-group storage-resource-group --mode Complete  --confirm-with-what-if  --template-file main.bicep --parameters main.parameters.json
 
 
 //output appServiceAppHostName string = appService.outputs.appServiceAppHostName
