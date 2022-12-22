@@ -21,6 +21,7 @@ az configure --defaults group=[storage-resource-group]
 az deployment group what-if --resource-group storage-resource-group --template-file test.bicep 
 az deployment group create --resource-group storage-resource-group --mode Complete  --confirm-with-what-if  --template-file main.bicep --parameters main.parameters.json
 
+az deployment group what-if --resource-group storage-resource-group --template-file modules/synapse.bicep 
 
 //output appServiceAppHostName string = appService.outputs.appServiceAppHostName
 
