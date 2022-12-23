@@ -6,8 +6,12 @@ param sqlServerAdministratorLogin string
 param sqlServerAdministratorPassword string
 param sqlDatabaseName string
 param sqlDatabaseSku object
-param auditStorageAccountName string
-param auditStorageAccountSkuName string
+//param auditStorageAccountName string
+//param auditStorageAccountSkuName string
+param storageAccount object
+@secure()
+param storageAccountKey string
+
 
 resource sqlServer 'Microsoft.Sql/servers@2020-11-01-preview' = {
   name: sqlServerName
@@ -20,6 +24,9 @@ resource sqlServer 'Microsoft.Sql/servers@2020-11-01-preview' = {
     CostCenter: 'AzureStart'
   }
 }
+
+
+
 
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
   parent: sqlServer
@@ -40,18 +47,6 @@ resource SqlFirewallRule 'Microsoft.Sql/servers/firewallRules@2022-05-01-preview
   }
 }
 
-resource auditStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01'={
-  name: auditStorageAccountName
-  location: location
-  tags: {
-    CostCenter: 'AzureStart' 
-  }
-  sku:{
-    name: auditStorageAccountSkuName
-  }
-  kind: 'StorageV2'
-}
-
 
 
 resource sqlServerAudit 'Microsoft.Sql/servers/auditingSettings@2022-05-01-preview'={
@@ -59,12 +54,13 @@ resource sqlServerAudit 'Microsoft.Sql/servers/auditingSettings@2022-05-01-previ
   name: 'default'
   properties:{
     state: 'Enabled'
-    storageEndpoint: auditStorageAccount.properties.primaryEndpoints.blob
-    storageAccountAccessKey: auditStorageAccount.listKeys().keys[0].value
+    storageEndpoint: storageAccount.properties.primaryEndpoints.blob
+    //storageAccountAccessKey: auditStorageAccount.listKeys().keys[0].value
+    storageAccountAccessKey:storageAccountKey
   }
 
 }
 
 
-output auditstorageEndpointBlob string = auditStorageAccount.properties.primaryEndpoints.blob
+//output auditstorageEndpointBlob string = auditStorageAccount.properties.primaryEndpoints.blob
 //output storageAccesskey string = listKeys(auditStorageAccount.id, auditStorageAccount.apiVersion).keys[0]

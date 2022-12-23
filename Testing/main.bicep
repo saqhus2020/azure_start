@@ -21,7 +21,7 @@ param sqlServerAdministratorLogin string
 param sqlServerAdministratorPassword string
 param sqlDatabaseSku object
 
-param auditStorageAccountSkuName string = 'Standard_LRS'
+param storageAccountSkuName string = 'Standard_LRS'
 param virtualNetworkAddressPrefix string 
 param subnets array 
 
@@ -30,8 +30,28 @@ var appServicePlanName = '${environmentName}-${solutionName}-plan'
 var appServiceAppName = '${environmentName}-${solutionName}-app'
 var sqlServerName = '${environmentName}-${solutionName}-sql'
 var sqlDatabaseName = 'Employees'
-var auditStorageAccountName = '${environmentName}${solutionName}auditst'
+var storageAccountName = '${environmentName}${solutionName}st'
 var virtualnetworkName = '${environmentName}-${solutionName}-vnet'
+var synapseWorkspaceName = '${environmentName}-${solutionName}-saws'
+
+
+param containerNames array = [
+  'synapse'
+  'audit'
+  'log'
+]
+
+
+
+module storage 'modules/storage.bicep'={
+  name: 'storage'
+  params:{
+    location: location
+    storageAccountName: storageAccountName
+    storageAccountSkuName:  storageAccountSkuName
+    containerNames: containerNames
+  }
+}
 
 module virtualNetwork 'modules/network.bicep'={
   name: 'virtualNetwork'
@@ -63,14 +83,27 @@ module sqlServer 'modules/sqlServer.bicep' = {
     sqlServerAdministratorLogin: sqlServerAdministratorLogin
     sqlServerAdministratorPassword: sqlServerAdministratorPassword
     sqlServerName: sqlServerName
-    auditStorageAccountName: auditStorageAccountName
-    auditStorageAccountSkuName: auditStorageAccountSkuName
+    storageAccount: storage.outputs.storageAccount
+    storageAccountKey: storage.outputs.StorageAccountKey
     
   }
 }
 
 
+module synapse 'modules/synapse.bicep' = {
+  name: 'synapse'
+  params:{
+    synapseSqlAdminUserName: sqlServerAdministratorLogin
+    synapseSqlAdminPassword: sqlServerAdministratorPassword
+    resourceLocation: location
+    synapseDefaultContainerName:'synapse'
+    workspaceDataLakeAccountName: storageAccountName
+    synapseWorkspaceName: synapseWorkspaceName
+  }
+}
+
+
 output solutionName string = solutionName
-output auditstorageEndpointBlob string = sqlServer.outputs.auditstorageEndpointBlob
+//output auditstorageEndpointBlob string =  sqlServer.outputs.auditstorageEndpointBlob
 //output storageAccesskey string = sqlServer.outputs.storageAccesskey
 
