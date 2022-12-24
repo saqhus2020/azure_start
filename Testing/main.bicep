@@ -42,7 +42,6 @@ param containerNames array = [
 ]
 
 
-
 module storage 'modules/storage.bicep'={
   name: 'storage'
   params:{
@@ -74,8 +73,17 @@ module appService 'modules/appService.bicep' = {
   }
 }
 
+
+resource storageaccountKey 'Microsoft.Storage/storageAccounts@2021-02-01' existing= {
+  name: storageAccountName
+}
+
+
 module sqlServer 'modules/sqlServer.bicep' = {
   name: 'sqlServer'
+  dependsOn:[
+    storage
+  ]
   params: {
     location: location
     sqlDatabaseName: sqlDatabaseName
@@ -84,14 +92,17 @@ module sqlServer 'modules/sqlServer.bicep' = {
     sqlServerAdministratorPassword: sqlServerAdministratorPassword
     sqlServerName: sqlServerName
     storageAccount: storage.outputs.storageAccount
-    storageAccountKey: storage.outputs.StorageAccountKey
-    
+    storageAccountKey:  storageaccountKey.listKeys().keys[0].value
+ 
   }
 }
 
 
 module synapse 'modules/synapse.bicep' = {
   name: 'synapse'
+  dependsOn:[
+    storage
+]
   params:{
     synapseSqlAdminUserName: sqlServerAdministratorLogin
     synapseSqlAdminPassword: sqlServerAdministratorPassword

@@ -26,4 +26,6 @@ az deployment group what-if --resource-group storage-resource-group --template-f
 az deployment group create  --resource-group storage-resource-group --template-file modules/synapse.bicep 
 //output appServiceAppHostName string = appService.outputs.appServiceAppHostName
 
-1
+
+//create service principal
+ az ad sp create-for-rbac -n tiger --skip-assignment

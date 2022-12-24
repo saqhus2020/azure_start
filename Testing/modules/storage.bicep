@@ -24,5 +24,6 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
 
 
 output storageAccount object = storageAccount
-output StorageAccountKey string = storageAccount.listKeys().keys[0].value
+output storageAccountName string = storageAccount.name
+//output StorageAccountKey string = storageAccount.listKeys().keys[0].value
 output StorageAccountId string = storageAccount.id

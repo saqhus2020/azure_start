@@ -11,35 +11,9 @@ param synapseSqlAdminPassword string
 param synapseManagedRGName string = '${synapseWorkspaceName}-mrg'
 param resourceLocation string = resourceGroup().location
 var storageEnvironmentDNS = environment().suffixes.storage
-//var dataLakeStorageAccountUrl = 'https://${workspaceDataLakeAccountName}.dfs.${storageEnvironmentDNS}' 
 var dataLakeStorageAccountUrl = 'https://${workspaceDataLakeAccountName}.dfs.${storageEnvironmentDNS}' 
 var azureRBACStorageBlobDataContributorRoleID = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe' //Storage Blob Data Contributor Role
 
-
-/*
-resource r_workspaceDataLakeAccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
-  name: workspaceDataLakeAccountName
-  location: resourceLocation
-  properties:{
-    isHnsEnabled: true
-    accessTier:'Hot'
-    networkAcls: {
-      defaultAction: 'Allow'
-      bypass:'None'
-      resourceAccessRules: [
-        {
-          tenantId: subscription().tenantId
-          resourceId: r_synapseWorkspace.id
-        }
-    ]
-    }
-  }
-  kind:'StorageV2'
-  sku: {
-      name: 'Standard_LRS'
-  }
-}
-*/
 
 //Synapse Workspace
 resource r_synapseWorkspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
@@ -66,9 +40,15 @@ resource r_synapseWorkspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   }
 }
 
+
+resource workspaceDataLakeAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing= {
+  name: workspaceDataLakeAccountName
+
+}
+
+
 //Synapse Workspace Role Assignment as Blob Data Contributor Role in the Data Lake Storage Account
 //https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-grant-workspace-managed-identity-permissions
-/*
 resource r_dataLakeRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
   name: guid(r_synapseWorkspace.name, workspaceDataLakeAccountName)
   scope: workspaceDataLakeAccount
@@ -78,7 +58,7 @@ resource r_dataLakeRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-
     principalType:'ServicePrincipal'
   }
 }
-*/
+
 
 resource r_synapseWorkspaceFirewallAllowAll 'Microsoft.Synapse/workspaces/firewallRules@2021-06-01' = {
   parent: r_synapseWorkspace
