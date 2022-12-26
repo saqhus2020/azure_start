@@ -25,17 +25,12 @@ param storageAccountSkuName string = 'Standard_LRS'
 param virtualNetworkAddressPrefix string 
 param subnets array 
 
-
-
 param tenantId string = subscription().tenantId 
 param objectId string =  '2c52c6b6-1ce7-4ad6-942c-499a8fddba1f' 
 param keysPermissions array 
 param secretsPermissions array 
 //param skuName string 
 param secretNames array
-@secure()
-param secretValue string
-
 
 var appServicePlanName = '${environmentName}-${solutionName}-plan'
 var appServiceAppName = '${environmentName}-${solutionName}-app'
@@ -61,8 +56,7 @@ module keyvault 'modules/keyvault.bicep'={
     keyVaultName:keyVaultName
     location:location
     objectId:objectId
-    secretNames:secretNames
-    secretValue:secretValue
+    secretNames:secretNames 
     secretsPermissions:secretsPermissions
     tenantId:tenantId
   }
@@ -104,6 +98,12 @@ resource storageaccountKey 'Microsoft.Storage/storageAccounts@2021-02-01' existi
   name: storageAccountName
 }
 
+resource keyVaultSecrets 'Microsoft.KeyVault/vaults@2019-09-01' existing= {
+  name: keyVaultName 
+  scope:resourceGroup()
+}
+
+
 
 module sqlServer 'modules/sqlServer.bicep' = {
   name: 'sqlServer'
@@ -115,8 +115,8 @@ module sqlServer 'modules/sqlServer.bicep' = {
     location: location
     sqlDatabaseName: sqlDatabaseName
     sqlDatabaseSku: sqlDatabaseSku
-    sqlServerAdministratorLogin: sqlServerAdministratorLogin
-    sqlServerAdministratorPassword: sqlServerAdministratorPassword
+    //sqlServerAdministratorLogin: keyVaultSecrets.getSecret('sqlAdminLogin')
+    sqlServerAdministratorPassword: keyVaultSecrets.getSecret('sqlAdminLoginPassword')
     sqlServerName: sqlServerName
     storageAccount: storage.outputs.storageAccount
     storageAccountKey:  storageaccountKey.listKeys().keys[0].value

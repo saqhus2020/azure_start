@@ -1,13 +1,11 @@
 
 param location string
 param sqlServerName string
-param sqlServerAdministratorLogin string
+param sqlServerAdministratorLogin string = 'sqladmin'
 @secure()
 param sqlServerAdministratorPassword string
 param sqlDatabaseName string
 param sqlDatabaseSku object
-//param auditStorageAccountName string
-//param auditStorageAccountSkuName string
 param storageAccount object
 @secure()
 param storageAccountKey string
@@ -24,8 +22,6 @@ resource sqlServer 'Microsoft.Sql/servers@2020-11-01-preview' = {
     CostCenter: 'AzureStart'
   }
 }
-
-
 
 
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
@@ -47,15 +43,12 @@ resource SqlFirewallRule 'Microsoft.Sql/servers/firewallRules@2022-05-01-preview
   }
 }
 
-
-
 resource sqlServerAudit 'Microsoft.Sql/servers/auditingSettings@2022-05-01-preview'={
   parent: sqlServer
   name: 'default'
   properties:{
     state: 'Enabled'
     storageEndpoint: storageAccount.properties.primaryEndpoints.blob
-    //storageAccountAccessKey: auditStorageAccount.listKeys().keys[0].value
     storageAccountAccessKey:storageAccountKey
   }
 

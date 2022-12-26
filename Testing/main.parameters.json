@@ -47,22 +47,19 @@
     },
     "secretNames": {    
       "value": [
-        "secret1",
-        "secret2"
+        "sqlAdminLogin",
+        "sqlAdminLoginPassword"
     ]
   },
-    "secretValue": {
-      "value": "tiger3"
-    }, 
     "keysPermissions": {
       "value": [
-        "get",
+        "All",
         "list"
       ]
     },
     "secretsPermissions": {
       "value": [
-        "get",
+        "All",
         "list"
       ]
     }
