@@ -44,6 +44,27 @@
           "ipAddressRange": "10.10.10.0/24"
         }
       ]
+    },
+    "secretNames": {    
+      "value": [
+        "secret1",
+        "secret2"
+    ]
+  },
+    "secretValue": {
+      "value": "tiger3"
+    }, 
+    "keysPermissions": {
+      "value": [
+        "get",
+        "list"
+      ]
+    },
+    "secretsPermissions": {
+      "value": [
+        "get",
+        "list"
+      ]
     }
   }
 }

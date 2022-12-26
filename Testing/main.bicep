@@ -26,6 +26,17 @@ param virtualNetworkAddressPrefix string
 param subnets array 
 
 
+
+param tenantId string = subscription().tenantId 
+param objectId string =  '2c52c6b6-1ce7-4ad6-942c-499a8fddba1f' 
+param keysPermissions array 
+param secretsPermissions array 
+//param skuName string 
+param secretNames array
+@secure()
+param secretValue string
+
+
 var appServicePlanName = '${environmentName}-${solutionName}-plan'
 var appServiceAppName = '${environmentName}-${solutionName}-app'
 var sqlServerName = '${environmentName}-${solutionName}-sql'
@@ -33,6 +44,7 @@ var sqlDatabaseName = 'Employees'
 var storageAccountName = '${environmentName}${solutionName}st'
 var virtualnetworkName = '${environmentName}-${solutionName}-vnet'
 var synapseWorkspaceName = '${environmentName}-${solutionName}-saws'
+var keyVaultName = '${environmentName}-${solutionName}-kv'
 
 
 param containerNames array = [
@@ -41,6 +53,20 @@ param containerNames array = [
   'log'
 ]
 
+
+module keyvault 'modules/keyvault.bicep'={
+  name:'keyvault'
+  params:{
+    keysPermissions:keysPermissions
+    keyVaultName:keyVaultName
+    location:location
+    objectId:objectId
+    secretNames:secretNames
+    secretValue:secretValue
+    secretsPermissions:secretsPermissions
+    tenantId:tenantId
+  }
+}
 
 module storage 'modules/storage.bicep'={
   name: 'storage'
@@ -83,6 +109,7 @@ module sqlServer 'modules/sqlServer.bicep' = {
   name: 'sqlServer'
   dependsOn:[
     storage
+    keyvault
   ]
   params: {
     location: location
@@ -102,6 +129,7 @@ module synapse 'modules/synapse.bicep' = {
   name: 'synapse'
   dependsOn:[
     storage
+    keyvault
 ]
   params:{
     synapseSqlAdminUserName: sqlServerAdministratorLogin
